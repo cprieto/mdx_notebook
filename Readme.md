@@ -7,19 +7,19 @@ When working in a Jupyter to Notebook extension for Pelican I found problems try
 This extension adds support for the elements `|[]>` and `|<[]` to indicate _outputs_ and _inputs_ respectibly. They will be rendered inside `code` elements with defined class styles, for example:
 
 ```md
-|[]> val a: int = 4
+|[]> val a: int = 4 |[]>
 ```
 
 Would be rendered as:
 
-```
+```html
 <code class="notebook_output">val a: int = 4</code>
 ```
 
 You can define a number between the brackets for the style:
 
 ```md
-|[12]> val a: int = 5
+|[12]> val a: int = 5 |[]>
 ```
 
 Would be rendered as:
