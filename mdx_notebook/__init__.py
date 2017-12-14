@@ -5,7 +5,7 @@ from markdown.blockprocessors import BlockProcessor
 
 
 class NotebookOutputBlockProcessor(BlockProcessor):
-    RE_OUTPUT = re.compile(r'(\|\[(?P<number>\d*)\]>)(?P<text>.*?)<\[\]\|')
+    RE_OUTPUT = re.compile(r'(\[(?P<number>\d*)\]>)\n(?P<text>.*?)\n<\[\]')
 
     def __init__(self, parser, config):
         self.config = config
@@ -18,6 +18,9 @@ class NotebookOutputBlockProcessor(BlockProcessor):
         block = blocks.pop(0)
 
         match = self.RE_OUTPUT.match(block)
+        if not match:
+            return
+
         text = match.group('text')
 
         container = etree.SubElement(parent, 'div')
