@@ -34,7 +34,7 @@ class NotebookOutputBlockProcessor(BlockProcessor):
     @staticmethod
     def append(text, sibling):
         preElement = sibling.find("*/pre")
-        preElement.text = preElement.text + text
+        preElement.text = AtomicString('%s\n%s\n', preElement.text, text)
 
     def create(self, text, number, parent):
         container = etree.SubElement(parent, 'div')
