@@ -5,7 +5,7 @@ from markdown.blockprocessors import BlockProcessor
 
 
 class NotebookOutputBlockProcessor(BlockProcessor):
-    RE_OUTPUT = re.compile(r'(\[(?P<number>\d*)\]>)\n(?P<text>.*?)\n<\[\]')
+    RE_OUTPUT = re.compile(r'(\[(?P<number>\d*)\]>)\n?(?P<text>.*?)\n?<\[\]')
 
     def __init__(self, parser, config):
         self.config = config
