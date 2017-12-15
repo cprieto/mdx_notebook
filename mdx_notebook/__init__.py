@@ -22,16 +22,30 @@ class NotebookOutputBlockProcessor(BlockProcessor):
             return
 
         text = match.group('text')
+        number = match.group('number')
 
+        sibling = self.lastChild(parent)
+
+        if self.is_output_block(sibling, number):
+            self.append(text, sibling)
+        else:
+            self.create(text, number, parent)
+
+    @staticmethod
+    def append(text, sibling):
+        preElement = sibling.find("*/pre")
+        preElement.text = preElement.text + text
+
+    def create(self, text, number, parent):
         container = etree.SubElement(parent, 'div')
         container.set('class', self.config['OUTPUT_CLASS'])
-
+        container.set('data-output', number)
         if self.config['OUTPUT_SHOW_LABEL']:
             label = etree.SubElement(container, 'div')
             label.set('class', 'notebook_output_text')
 
             span = etree.SubElement(label, 'span')
-            span.text = self.config['OUTPUT_LABEL_TEXT'].format(match.group('number'))
+            span.text = self.config['OUTPUT_LABEL_TEXT'].format(number)
 
         output = etree.SubElement(container, 'div')
         output.set('class', 'notebook_output_code')
@@ -40,8 +54,10 @@ class NotebookOutputBlockProcessor(BlockProcessor):
         preElement.text = AtomicString('%s\n' % text)
 
     @staticmethod
-    def _is_output_block(sibling):
-        return sibling is not None and sibling.tag == "pre"
+    def is_output_block(sibling, current):
+        return sibling is not None and sibling.tag == "div" \
+            and sibling.get('class') == 'notebook_output' \
+            and sibling.get('data-output') == current
 
 
 class NotebookExtension(Extension):
