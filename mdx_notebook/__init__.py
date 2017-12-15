@@ -5,7 +5,7 @@ from markdown.blockprocessors import BlockProcessor
 
 
 class NotebookOutputBlockProcessor(BlockProcessor):
-    RE_OUTPUT = re.compile(r'(\[(?P<number>\d*)\]>)\n?(?P<text>.*?)\n?<\[\]')
+    RE_OUTPUT = re.compile(r'(\[(?P<number>\d*)\]>)\n?(?P<text>[\S\s]*?)\n?<\[\]')
 
     def __init__(self, parser, config):
         self.config = config
@@ -39,7 +39,7 @@ class NotebookOutputBlockProcessor(BlockProcessor):
         lines = [x for x in currentCode.split('\n') if x]
         lines.append(text)
 
-        preElement.text = AtomicString('%s' % '\n'.join(lines))
+        preElement.text = AtomicString('%s' % ('\n'.join(lines)))
 
     def create(self, text, number, parent):
         container = etree.SubElement(parent, 'div')
