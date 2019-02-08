@@ -28,4 +28,14 @@ Would be rendered as:
 <span class="notebook_output_index">12</span><code class="notebook_output">val a: int = 4</code>
 ```
 
-## Extension options
+## Configuration options
+
+ * `output_class` what class to use with the output code, by default is `notebook_output`
+ * `show_output` display output, by default is `True`, set this if you want to hide the output at all
+ * `show_label` display a label for the output
+ * `label_text` used with `show_label` set the text for the label for each output
+
+## Using the extension
+
+First install with pip: `pip install markdown-notebook` and then set the extension name in your Python Markdown library, the name of the extension is `mdx_notebook`.
+

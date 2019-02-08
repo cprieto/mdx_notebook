@@ -43,14 +43,14 @@ class NotebookOutputBlockProcessor(BlockProcessor):
 
     def create(self, text, number, parent):
         container = etree.SubElement(parent, 'div')
-        container.set('class', self.config['OUTPUT_CLASS'])
+        container.set('class', self.config['output_class'])
         container.set('data-output', number)
-        if self.config['OUTPUT_SHOW_LABEL']:
+        if self.config['show_label']:
             label = etree.SubElement(container, 'div')
             label.set('class', 'notebook_output_text')
 
             span = etree.SubElement(label, 'span')
-            span.text = self.config['OUTPUT_LABEL_TEXT'].format(number)
+            span.text = self.config['label_text'].format(number)
 
         output = etree.SubElement(container, 'div')
         output.set('class', 'notebook_output_code')
@@ -67,15 +67,15 @@ class NotebookOutputBlockProcessor(BlockProcessor):
 
 class NotebookExtension(Extension):
     def __init__(self, *args, **kwargs):
-        self.config = {'OUTPUT_CLASS': ['notebook_output', 'CSS class name for output styling'],
-                       'OUTPUT_SHOW': [True, 'Show output blocks'],
-                       'OUTPUT_SHOW_LABEL': [True, 'Show output label itself'],
-                       'OUTPUT_LABEL_TEXT': ['Out[{}]:', 'Label for output']}
+        self.config = {'output_class': ['notebook_output', 'CSS class name for output styling'],
+                       'show_output': [True, 'Show output blocks'],
+                       'show_label': [True, 'Show output label itself'],
+                       'label_text': ['Out[{}]:', 'Label for output']}
 
         super(NotebookExtension, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
-        if self.getConfig('OUTPUT_SHOW'):
+        if self.getConfig('show_output'):
             output = NotebookOutputBlockProcessor(md.parser, self.getConfigs())
             md.parser.blockprocessors.add('notebook_output', output, '>code')
 
